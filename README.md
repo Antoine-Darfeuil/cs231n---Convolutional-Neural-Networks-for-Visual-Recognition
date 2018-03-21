@@ -1,6 +1,5 @@
-# Stanford
-# cs231n - Convolutional Neural Networks for Visual Recognition
-# Spring 2017 
+# Stanford <br /> cs231n - Convolutional Neural Networks for Visual Recognition <br /> 
+Spring 2017 
 
 ## cs321n - Lectures
 
