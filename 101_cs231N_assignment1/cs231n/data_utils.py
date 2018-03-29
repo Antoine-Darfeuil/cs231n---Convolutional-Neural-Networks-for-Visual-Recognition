@@ -2,7 +2,7 @@ from __future__ import print_function
 
 from six.moves import cPickle as pickle
 import numpy as np
-import os
+import os, time
 from scipy.misc import imread
 import platform
 
@@ -25,19 +25,23 @@ def load_CIFAR_batch(filename):
     return X, Y
 
 def load_CIFAR10(ROOT):
-  """ load all of cifar """
-  xs = []
-  ys = []
-  for b in range(1,6):
-    f = os.path.join(ROOT, 'data_batch_%d' % (b, ))
-    X, Y = load_CIFAR_batch(f)
-    xs.append(X)
-    ys.append(Y)    
-  Xtr = np.concatenate(xs)
-  Ytr = np.concatenate(ys)
-  del X, Y
-  Xte, Yte = load_CIFAR_batch(os.path.join(ROOT, 'test_batch'))
-  return Xtr, Ytr, Xte, Yte
+    """ load all of cifar """
+    tic = time.time()
+    xs = []
+    ys = []
+    for b in range(1,6):
+        f = os.path.join(ROOT, 'data_batch_%d' % (b, ))
+        X, Y = load_CIFAR_batch(f)
+        print("> Batch {} loaded - {:.2f}s".format(b, time.time()-tic))
+        xs.append(X)
+        ys.append(Y)
+    Xtr = np.concatenate(xs); print("X train - concatenated. - {:.2f}s".format(time.time()-tic))
+    Ytr = np.concatenate(ys); print("Y train - concatenated. - {:.2f}s".format(time.time()-tic))
+    del X, Y
+    Xte, Yte = load_CIFAR_batch(os.path.join(ROOT, 'test_batch'))
+    print("> Test Batch loaded. - {:.2f}s".format(time.time()-tic))                              
+    return Xtr, Ytr, Xte, Yte
+
 
 
 def get_CIFAR10_data(num_training=49000, num_validation=1000, num_test=1000,
